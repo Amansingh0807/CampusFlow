@@ -368,12 +368,6 @@ git push -u origin main
 
 Never commit `.env`, Atlas credentials, JWT secrets, generated logs, `node_modules`, or build output.
 
-## Documentation
-
-- [API documentation](docs/api.md)
-- [Week 1 report](docs/Week-1-Project-Planning-and-System-Architecture.docx)
-- [Week 2 report](docs/Week-2-Front-End-Application-Development.docx)
-- [Week 3 report](docs/Week-3-Back-End-API-Development.docx)
 
 ## Known Limitations
 
