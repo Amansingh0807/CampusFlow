@@ -121,9 +121,13 @@ CampusFlow/
 │   └── README.md
 ├── docs/
 │   ├── api.md
+│   ├── Industrial-Training-Report-CampusFlow.docx
 │   ├── Week-1-Project-Planning-and-System-Architecture.docx
 │   ├── Week-2-Front-End-Application-Development.docx
-│   └── Week-3-Back-End-API-Development.docx
+│   ├── Week-3-Back-End-API-Development.docx
+│   ├── Week-4-Front-End-and-Back-End-Integration.docx
+│   ├── Week-5-Testing-Debugging-and-Optimization.docx
+│   └── Week-6-Deployment-Maintenance-and-Project-Reflection.docx
 ├── .env.example
 ├── .gitignore
 ├── package.json
@@ -257,9 +261,10 @@ Protected requests use `Authorization: Bearer <jwt>`.
 | POST | `/auth/register` | Public | Register student or organizer |
 | POST | `/auth/login` | Public | Issue JWT |
 | GET | `/auth/me` | Authenticated | Current user |
-| GET | `/events` | Public | Published event discovery with filters/pagination |
+| GET | `/events` | Public | Published event discovery with search, category, mode, phase, and pagination filters |
 | GET | `/events/categories` | Public | Read categories |
 | GET | `/events/:id` | Public | Published event details |
+| GET | `/events/:id/manage` | Organizer owner/Admin | Protected data for editing an owned event |
 | POST | `/events` | Organizer/Admin | Create event |
 | PUT | `/events/:id` | Organizer owner | Update editable event fields |
 | DELETE | `/events/:id` | Organizer owner | Delete event |
@@ -283,6 +288,7 @@ Full endpoint details are in [docs/api.md](docs/api.md).
 
 - **User:** identity, role, college/course/year or organization, active status, timestamps.
 - **Event:** title, description, category, organizer, schedule, mode, capacity, registration deadline, tags, eligibility, status, timestamps.
+- **Event custom details:** optional organizer-provided attendee instructions such as equipment, accessibility notes, dress code, or preparation details.
 - **Category:** unique name and slug.
 - **Registration:** user/event relationship with registered/cancelled status and a unique compound index.
 - **Bookmark:** user/event relationship with a unique compound index.
@@ -370,10 +376,14 @@ Never commit `.env`, Atlas credentials, JWT secrets, generated logs, `node_modul
 
 ## Documentation
 
+- [Industrial training report](docs/Industrial-Training-Report-CampusFlow.docx)
 - [API documentation](docs/api.md)
 - [Week 1 report](docs/Week-1-Project-Planning-and-System-Architecture.docx)
 - [Week 2 report](docs/Week-2-Front-End-Application-Development.docx)
 - [Week 3 report](docs/Week-3-Back-End-API-Development.docx)
+- [Week 4 report](docs/Week-4-Front-End-and-Back-End-Integration.docx)
+- [Week 5 report](docs/Week-5-Testing-Debugging-and-Optimization.docx)
+- [Week 6 report](docs/Week-6-Deployment-Maintenance-and-Project-Reflection.docx)
 
 ## Known Limitations
 
