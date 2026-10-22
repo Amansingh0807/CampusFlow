@@ -374,17 +374,6 @@ git push -u origin main
 
 Never commit `.env`, Atlas credentials, JWT secrets, generated logs, `node_modules`, or build output.
 
-## Documentation
-
-- [Industrial training report](docs/Industrial-Training-Report-CampusFlow.docx)
-- [API documentation](docs/api.md)
-- [Week 1 report](docs/Week-1-Project-Planning-and-System-Architecture.docx)
-- [Week 2 report](docs/Week-2-Front-End-Application-Development.docx)
-- [Week 3 report](docs/Week-3-Back-End-API-Development.docx)
-- [Week 4 report](docs/Week-4-Front-End-and-Back-End-Integration.docx)
-- [Week 5 report](docs/Week-5-Testing-Debugging-and-Optimization.docx)
-- [Week 6 report](docs/Week-6-Deployment-Maintenance-and-Project-Reflection.docx)
-
 ## Known Limitations
 
 This is the current repository state, not a claim that every platform requirement is complete. User administration, category CRUD, announcements, dedicated saved/notification pages, automated tests, Swagger/OpenAPI, audit logs, and production token/session hardening remain future work.
