@@ -26,6 +26,5 @@ export default function Home() {
       <section className="section-intro" id="how-it-works"><p className="kicker">The campus, in motion</p><h2>Good things happen<br /><em>when you show up.</em></h2><div className="how-grid"><div><div className="step-icon coral"><Compass /></div><span>01</span><h3>Find your signal</h3><p>Filter the noise. Find workshops, teams and events that match where you're headed.</p></div><div><div className="step-icon yellow"><CalendarDays /></div><span>02</span><h3>Save your spot</h3><p>Keep your week in one place and register before the good seats disappear.</p></div><div><div className="step-icon blue"><Users /></div><span>03</span><h3>Meet your people</h3><p>Turn an interest into a room full of people who are interested too.</p></div></div></section>
       <section className="home-cta"><div><p className="kicker">Your campus is waiting</p><h2>Start somewhere<br /><em>interesting.</em></h2></div><Link className="button button-light" to="/events">Browse all events <ArrowRight size={17} /></Link></section>
     </main>
-    <footer className="site-footer"><span className="logo"><Sparkles size={15} /> campus<span>flow</span></span><span>Built for the in-between moments.</span><span>© 2026 CampusFlow</span></footer>
   </>
 }

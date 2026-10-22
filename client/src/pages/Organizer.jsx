@@ -1,4 +1,4 @@
-import { ArrowRight, CalendarDays, Check, Plus, Ticket, TrendingUp } from 'lucide-react'
+import { ArrowRight, CalendarDays, Check, Edit3, Plus, Ticket, TrendingUp } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import DashboardLayout from '../components/DashboardLayout.jsx'
@@ -32,7 +32,7 @@ export default function Organizer() {
     {error && <div className="error-box">{error}</div>}
     {!data ? <div className="page-state">Loading your workspace...</div> : <>
       <div className="metric-grid"><div><span><CalendarDays size={16} /> Total events</span><strong>{data.totalEvents}</strong><small>across your organization</small></div><div><span><TrendingUp size={16} /> Published</span><strong>{data.publishedEvents}</strong><small>live opportunities</small></div><div><span><Ticket size={16} /> Registrations</span><strong>{data.registrations}</strong><small>students reached</small></div></div>
-      <section className="table-section"><div className="section-title"><div><p className="kicker">Your program</p><h2>Recent events</h2></div><Link to="/organizer/events">Manage all <ArrowRight size={14} /></Link></div><div className="event-table"><div className="table-head"><span>Event</span><span>Status</span><span>Registrations</span><span>Date</span></div>{data.events.map((event) => <div className="table-row" key={event._id}><strong>{event.title}</strong><span className={`status ${event.status}`}>{event.status}</span><span>{event.registeredCount} / {event.capacity}</span><span>{new Date(event.date).toLocaleDateString()}</span>{event.status === 'draft' && <button className="publish-action" onClick={() => publish(event._id)}><Check size={14} /> Publish</button>}</div>)}</div></section>
+      <section className="table-section"><div className="section-title"><div><p className="kicker">Your program</p><h2>Recent events</h2></div><Link to="/organizer/events">Manage all <ArrowRight size={14} /></Link></div><div className="event-table"><div className="table-head"><span>Event</span><span>Status</span><span>Registrations</span><span>Date</span><span>Actions</span></div>{data.events.map((event) => <div className="table-row" key={event._id}><strong>{event.title}</strong><span className={`status ${event.status}`}>{event.status}</span><span>{event.registeredCount} / {event.capacity}</span><span>{new Date(event.date).toLocaleDateString()}</span><span className="event-actions"><Link className="edit-action" to={`/organizer/events/${event._id}/edit`}><Edit3 size={14} /> Edit</Link>{event.status === 'draft' && <button className="publish-action" onClick={() => publish(event._id)}><Check size={14} /> Publish</button>}</span></div>)}</div></section>
     </>}
   </DashboardLayout>
 }
