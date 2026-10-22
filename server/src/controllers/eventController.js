@@ -6,7 +6,7 @@ import Bookmark from '../models/Bookmark.js'
 import Notification from '../models/Notification.js'
 import { ok, fail } from '../utils/response.js'
 
-const editableEventFields = ['title', 'description', 'category', 'date', 'startTime', 'endTime', 'venue', 'mode', 'image', 'capacity', 'registrationDeadline', 'tags', 'eligibility']
+const editableEventFields = ['title', 'description', 'category', 'date', 'startTime', 'endTime', 'venue', 'mode', 'image', 'capacity', 'registrationDeadline', 'tags', 'eligibility', 'customDetails']
 const pickEventFields = (source) => Object.fromEntries(editableEventFields.filter((field) => source[field] !== undefined).map((field) => [field, source[field]]))
 const pageOptions = (query) => {
   const page = Math.max(Number.parseInt(query.page, 10) || 1, 1)
@@ -17,11 +17,21 @@ const pageOptions = (query) => {
 export async function listEvents(request, response, next) {
   try {
     const { page, limit, skip } = pageOptions(request.query)
-    const { search, category, mode, sort = 'date' } = request.query
+    const { search, category, mode, phase, sort = 'date' } = request.query
     const query = { status: 'published' }
     if (search?.trim()) query.$text = { $search: search.trim() }
     if (category) query.category = category
     if (mode) query.mode = mode
+    if (phase && !['past', 'present', 'upcoming'].includes(phase)) throw fail('Invalid event phase', 400)
+    if (phase) {
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      const tomorrow = new Date(today)
+      tomorrow.setDate(tomorrow.getDate() + 1)
+      if (phase === 'past') query.date = { $lt: today }
+      if (phase === 'present') query.date = { $gte: today, $lt: tomorrow }
+      if (phase === 'upcoming') query.date = { $gte: tomorrow }
+    }
     const count = await Event.countDocuments(query)
     const events = await Event.find(query)
       .select('title description category organizer date startTime endTime venue mode image capacity registeredCount registrationDeadline tags eligibility status')
@@ -37,9 +47,19 @@ export async function getEvent(request, response, next) {
   try {
     if (!mongoose.isValidObjectId(request.params.id)) throw fail('Invalid event id', 400)
     const event = await Event.findOne({ _id: request.params.id, status: 'published' })
-      .select('title description category organizer date startTime endTime venue mode image capacity registeredCount registrationDeadline tags eligibility status')
+      .select('title description category organizer date startTime endTime venue mode image capacity registeredCount registrationDeadline tags eligibility customDetails status')
       .populate('category', 'name').populate('organizer', 'name organization').lean()
     if (!event) throw fail('Event not found', 404)
+    return ok(response, event)
+  } catch (error) { next(error) }
+}
+
+export async function getManagedEvent(request, response, next) {
+  try {
+    if (!mongoose.isValidObjectId(request.params.id)) throw fail('Invalid event id', 400)
+    const filter = request.user.role === 'ADMIN' ? { _id: request.params.id } : { _id: request.params.id, organizer: request.user._id }
+    const event = await Event.findOne(filter).select('title description category organizer date startTime endTime venue mode image capacity registeredCount registrationDeadline tags eligibility customDetails status').populate('category', 'name').lean()
+    if (!event) throw fail('Event not found or you do not have permission to edit it', 404)
     return ok(response, event)
   } catch (error) { next(error) }
 }
@@ -54,7 +74,8 @@ export async function createEvent(request, response, next) {
 export async function updateEvent(request, response, next) {
   try {
     if (!mongoose.isValidObjectId(request.params.id)) throw fail('Invalid event id', 400)
-    const event = await Event.findOne({ _id: request.params.id, organizer: request.user._id })
+    const filter = request.user.role === 'ADMIN' ? { _id: request.params.id } : { _id: request.params.id, organizer: request.user._id }
+    const event = await Event.findOne(filter)
     if (!event) throw fail('Event not found or not owned by you', 404)
     Object.assign(event, pickEventFields(request.body))
     await event.save()
